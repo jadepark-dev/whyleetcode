@@ -1,4 +1,4 @@
-name: Sync Leetcode
+name: Time to Leetcode :D
 
 on:
   workflow_dispatch:
@@ -10,13 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: LeetCode Sync
-        uses: joshcai/leetcode-sync@v1.5
-            
+      - uses: 8398a7/action-slack@v3
         with:
-          github-token: ${{ github.token }}
-          leetcode-csrf-token: ${{ secrets.LEETCODE_CSRF_TOKEN }}
-          leetcode-session: ${{ secrets.LEETCODE_SESSION }}
-          
-          
-
+          status: "Hey it's time to leetcode, disable me if you want to be a loser"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+        if: always() # Pick up events even if the job fails or is canceled.
