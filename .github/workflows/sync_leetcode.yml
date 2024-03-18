@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: 8398a7/action-slack@v3
         with:
-          status: "Hey it's time to leetcode, disable me if you want to be a loser"
+          status: "success"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
         if: always() # Pick up events even if the job fails or is canceled.
