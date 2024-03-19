@@ -1,5 +1,5 @@
 # WhyLeetCode
-My problem-solving journey. 
+Leetcode archieve
 
 [Personal Progress Sheet](https://docs.google.com/spreadsheets/d/1NjIA16t1ZnCt4hphromtHCjUKhtNMEHMBPvj4VevTBY/edit?usp=sharing)
 
