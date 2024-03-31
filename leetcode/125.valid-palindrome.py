@@ -68,6 +68,7 @@ class Solution:
 
         # let's meet at the middle
         while p1 < p2:
+
             # convert into lowercase for efficiency
             c1 = s[p1].lower()
             c2 = s[p2].lower()
@@ -89,5 +90,15 @@ class Solution:
         # after traversing all the characters, return true
         return True
 
+    # @lc code=end
 
-# @lc code=end
+# reverse and compare
+"""
+class Solution:
+    def isPalindrome(self, s: str) -> bool:
+        new = ""
+        for a in s:
+            if a.isalpha() or a.isdigit():
+                new += a.lower()
+        return new == new[::-1]
+"""
