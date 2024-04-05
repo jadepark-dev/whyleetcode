@@ -89,7 +89,7 @@ class Solution:
                 else:
                     res.append([a, nums[left], nums[r]])
                     left += 1
-                    r -= 1
+                    # r -= 1 # we can let our while loop can handle this.
                     while left < r and nums[left] == nums[left - 1]:
                         left += 1
 

@@ -66,8 +66,10 @@ class Solution(object):
         :type q: TreeNode
         :rtype: bool
         """
+        # empty tree
         if not p and not q:
             return True
+        # not identical
         if not p or not q or p.val != q.val:
             return False
 

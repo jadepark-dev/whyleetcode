@@ -61,9 +61,19 @@ class Solution:
 
         l, r = 0, len(height) - 1
         while l < r:
+            # calculate area
             currArea = min(height[l], height[r]) * (r - l)
+            # get the max area
             maxArea = max(maxArea, currArea)
-
+            """ 
+                because we already have the max area with that height
+                - since it is the lower pointer that means that 
+                every other distance that is closer will always be 
+                a smaller distance with the same or less height 
+                which means smaller area. 
+                
+                Therefore we do not need to look at every other combination with that pointer.
+            """
             if height[l] < height[r]:
                 l += 1
             else:
