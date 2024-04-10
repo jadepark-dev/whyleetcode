@@ -56,32 +56,32 @@ from collections import List
 # @lc code=start
 class Solution:
     def search(self, nums: List[int], target: int) -> int:
-        # no duplicated integers in nums
-        # based on the k index it's pivotted
+        # [4,5,6,7,0,1,2]
+        #  l     m     r
+        #          l m r
 
-        # two pointer, check which side of the array is sorted.
         l, r = 0, len(nums) - 1
 
         while l <= r:
             m = l + (r - l) // 2
 
-            # found it!
-            if target == nums[m]:
+            if nums[m] == target:
                 return m
 
-            # left side is sorted
             if nums[m] >= nums[l]:
-                if target > nums[m] or target < nums[l]:
-                    l = m + 1
-                else:
+                # left portion is sorted
+                if nums[l] <= target < nums[m]:
+                    # the value is in the left range
                     r = m - 1
-
-            # right side is sorted
+                else:
+                    l = m + 1
             else:
-                if target < nums[m] or target > nums[r]:
-                    r = m - 1
-                else:
+                # right portion is sorted
+                if nums[m] < target <= nums[r]:
+                    # the value is in the right range
                     l = m + 1
+                else:
+                    r = m - 1
 
         return -1
 
