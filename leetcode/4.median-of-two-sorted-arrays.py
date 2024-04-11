@@ -54,44 +54,48 @@ from typing import List
 
 # @lc code=start
 class Solution:
+
     def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        # run binary search to find the partition pivot point in shorter array
 
         A, B = nums1, nums2
+
         total = len(nums1) + len(nums2)
         half = total // 2
 
-        # keep the array A smaller
-        if len(B) < len(A):
+        if len(A) > len(B):
             A, B = B, A
 
+        # binary search on the shorter array to find middle point
         l, r = 0, len(A) - 1
 
         while True:
-            # middle pointer for the shorter array(A)
-            i = (l + r) // 2
-            # middle pointer for the longer array(B)
-            # we already know the half
-            j = half - i
 
-            Aleft = A[i] if i >= 0 else -float("-infinity")
-            Aright = A[i + 1] if (i + 1) < len(A) else float("infinity")
+            # middle point for A
+            midA = l + (r - l) // 2
 
-            Bleft = B[j] if j >= 0 else -float("-infinity")
-            Bright = B[j + 1] if (j + 1) < len(B) else float("infinity")
+            # middle point for B(longer array)
+            midB = half - midA - 2  #####
 
-            if Aleft <= Bright and Bleft <= Aright:
-                # right partition is correct
-                # odd(홀수)
-                if total % 2 == 1:
-                    return min(Aright, Bright)
-                # even length
+            leftAmax = A[midA] if midA >= 0 else float("-infinity")
+            rightAmin = A[midA + 1] if (midA + 1) < len(A) else float("infinity")
+
+            leftBmax = (
+                B[midB] if midB >= 0 else float("-infinity")
+            )  ### out of index, why?
+            rightBmin = B[midB + 1] if (midB + 1) < len(B) else float("infinity")
+
+            if leftAmax <= rightBmin and leftBmax <= rightAmin:
+                # merged array length is even
+                if total % 2 == 0:
+                    return (max(leftAmax, leftBmax) + min(rightAmin, rightBmin)) / 2.0
                 else:
-                    return max(Aleft, Bleft) + min(Aright, Bright) / 2
+                    return min(rightAmin, rightBmin)  #####
 
-            elif Aleft > Bright:
-                r = i - 1
+            elif leftAmax > rightBmin:
+                r = midA - 1  #####
             else:
-                l = i + 1
+                l = midA + 1
 
         # it's not log n.. isn't it?
         """
