@@ -67,5 +67,38 @@ class Solution:
             maxP = max(maxP, price - lowest)
         return maxP
 
+        # brute force way... prices * prices -> O(n^2)
+        # so two pointer technique
+        # always i < j, so initially 0, 1
+        # so 0 <= i < len(prices) - 1, 1 <= j < len(prices) if profitable
+
+        """ bare two pointer alike(but same technique)
+        res = 0
+
+        i, j = 0, 1
+
+        while j < len(prices):
+            profit = prices[j] - prices[i]
+
+            if profit > 0:
+                res = max(res, profit)
+            else:
+                i = j
+
+            j += 1
+
+        return res
+        """
+
+        """
+        min_price = prices[0]
+        max_profit = 0
+        
+        for price in prices[1:]:
+            max_profit = max(max_profit, price - min_price)
+            min_price = min(min_price, price)
+            
+        return max_profit
+        """
 
 # @lc code=end
