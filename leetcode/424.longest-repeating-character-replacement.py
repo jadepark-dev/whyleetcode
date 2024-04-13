@@ -52,18 +52,26 @@
 # @lc code=start
 class Solution:
     def characterReplacement(self, s: str, k: int) -> int:
+        # find longest -> replace fewer characters
+        # brute force try -> O(n^2)
 
-        count = {}
+        # return the length of the longest substring after mutation
+        # create a window, window size - frequent characters <= k
+        # count characters, keep the max frequency
 
-        l = 0
-        maxf = 0
+        charCount = {}
+
+        l, r = 0, 0
+        maxF = 0  # most frequest character count
+
         for r in range(len(s)):
-            count[s[r]] = 1 + count.get(s[r], 0)
-            maxf = max(maxf, count[s[r]])
 
-            if (r - l + 1) - maxf > k:
-                count[s[l]] -= 1
-                l += 1
+            charCount[s[r]] = 1 + charCount.get(s[r], 0)
+            maxF = max(maxF, charCount[s[r]])
+
+            if (r - l + 1) - maxF > k:  # k is not enough to replace fewer chars
+                charCount[s[l]] -= 1
+                l += 1  # shift the left pointer
 
         return r - l + 1
 
