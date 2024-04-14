@@ -87,57 +87,55 @@ class Solution(object):
         :rtype: List[List[int]]
         """
 
-        """
-            Reach to the both of ocean
-            -> Create two sets of the highest cells that can be reached from cells near ocean
-            -> Traverse cells and check if the cell can be found in the both of cells.
-        """
+        # why not climb up from the both ocean
 
         ROWS, COLS = len(heights), len(heights[0])
         pac, atl = set(), set()
 
-        # take r,c and visited(generalised set), and prevHeight for comparing
-        def dfs(r, c, visited, prevHeight):
-
-            # don't go further if the cell is out of boundary,
-            # or the height is smaller so we can't move on.
+        def dfs(r, c, visit, prevHeight):
+            # check if we reached to the border
+            # or we already been here
+            # or it's too low to go further
             if (
-                (r, c) in visited
-                or r < 0
+                r < 0
                 or r == ROWS
                 or c < 0
                 or c == COLS
+                or (r, c) in visit
                 or heights[r][c] < prevHeight
             ):
                 return
 
-            # add to visited to 1. prevent duplicated visit 2. check later for determine if the cell is included in the both sets
-            visited.add((r, c))
+            # add to the set
 
-            # move on! worry about the index boundary at the first stage of dfs function
-            dfs(r + 1, c, visited, heights[r][c])
-            dfs(r - 1, c, visited, heights[r][c])
-            dfs(r, c + 1, visited, heights[r][c])
-            dfs(r, c - 1, visited, heights[r][c])
+            visit.add((r, c))
+            # let's go further
+            dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]]
 
-        for c in range(COLS):
-            # cells on the top edge
-            dfs(0, c, pac, heights[0][c])
-            # cells on the bottom edge
-            dfs(ROWS - 1, c, atl, heights[ROWS - 1][c])
+            for dr, dc in dirs:
+                dfs(r + dr, c + dc, visit, heights[r][c])
 
-        for r in range(ROWS):
-            # cells on the left edge
-            dfs(r, 0, pac, heights[r][0])
-            # cells on the right edge
-            dfs(r, COLS - 1, atl, heights[r][COLS - 1])
+        # run dfs to get the farest coords from both ocean
+        for i in range(ROWS):
+            # left pacific side
+            dfs(i, 0, pac, 0)
+            # right atl side
+            dfs(i, COLS - 1, atl, 0)
+
+        for i in range(COLS):
+            # top pac side
+            dfs(0, i, pac, 0)
+            # bottom atl side
+            dfs(ROWS - 1, i, atl, 0)
 
         res = []
-        # traverse all the cells to find the solution
-        for r in range(ROWS):
-            for c in range(COLS):
-                if (r, c) in pac and (r, c) in atl:
-                    res.append([r, c])
+
+        # check if we reached to
+        for i in range(ROWS):
+            for j in range(COLS):
+                if (i, j) in pac and (i, j) in atl:
+                    res.append([i, j])
+
         return res
 
 
