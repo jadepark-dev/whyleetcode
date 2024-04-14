@@ -65,43 +65,57 @@
 
 # @lc code=start
 class Solution:
+
     def minWindow(self, s: str, t: str) -> str:
-        if len(s) < len(t):
-            return ""
 
-        chars = {}
+        # create a hashmap to count characters in string t
+        # create a hashmap to count characters in current window
+        # sliding window
+        # extend the window until we find the valid window
+        # in the valid window, compare the window size and store the string indices.
+        # shrink the left side of the window while we have valid window
+        # if we lose our validity, again, extend the right side of the window
 
-        # create a hashmap for t
+        countT, window = {}, {}
+
         for c in t:
-            chars[c] = 1 + chars.get(c, 0)
+            countT[c] = 1 + countT.get(c, 0)
 
-        l = 0  # doesn't have to be 0? where is the start?
+        res, minLength = [-1, -1], float("infinity")
 
-        # find the left side
-        for i in range(len(s)):
-            if s[i] in chars:
-                l = i
-                break
+        have, need = 0, len(countT)
 
-        print(chars)
-        for r in range(l, len(s)):
+        # seize the left pointer on the left edge
+        l = 0
 
-            # extend the window(r += 1, for loop do the job)
-            # check if new char is in character
-            # reduce the number of that char
-            # if we have char empty, return the miminum string[l:r+1] found
-            # right edge of the window
+        for r in range(len(s)):
+            c = s[r]
 
-            if s[r] in chars and chars[s[r]] > 0:
-                chars[s[r]] -= 1
-                if chars[s[r]] == 0:
-                    del chars[s[r]]
+            # add current character to consideration
+            window[c] = 1 + window.get(c, 0)
 
-            if not chars:
-                return s[l : r + 1]
+            # this is the character we're looking for
+            # and the count of this character is exactly same
+            if c in countT and countT[c] == window[c]:
+                have += 1
 
-        return ""
-        # oh minimum...
+            # whilst the window is valid, do the thing you need to do
+
+            while have == need:
+                # this is possible solution, compare.
+                if (r - l + 1) < minLength:
+                    res = [l, r]
+                    minLength = r - l + 1  # store to compare in the future
+                # we're losing the character!
+                lc = s[l]
+                window[lc] -= 1
+                if lc in countT and window[lc] < countT[lc]:
+                    have -= 1
+                # move the left pointer
+                l += 1
+
+        l, r = res
+        return s[l : r + 1] if minLength != float("infinity") else ""
 
 
 # @lc code=end

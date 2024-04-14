@@ -51,7 +51,7 @@ class Solution:
     def longestConsecutive(self, nums) -> int:
         # initialise value for comparison
         longest = 0
-        # it's just set...
+        # it's just set... to remove duplications
         num_set = set(nums)
 
         for n in num_set:
