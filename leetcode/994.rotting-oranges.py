@@ -72,47 +72,65 @@ from collections import deque
 # @lc code=start
 class Solution(object):
     def orangesRotting(self, grid):
-        """
-        :type grid: List[List[int]]
-        :rtype: int
-        """
-        # rotten orange position tracker
-        q = deque()
+        # minimum number of minutes, or -1
 
-        fresh, time = 0, 0
+        # why bfs => adjacent oranges first(simultaneously)
+        time = 0
 
-        ROWS, COLS = len(grid), len(grid[0])
+        # manage rotten oranges
+        rottens = deque()
 
-        for r in range(ROWS):
-            for c in range(COLS):
-                orange = grid[r][c]
-                # if orange is rotten, put it in the queue
-                if orange == 2:
-                    q.append([r, c])
-                elif orange == 1:
+        # store the count of fresh oranges
+        fresh = 0
+
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                status = grid[i][j]
+
+                if status == 2:
+                    # store rotten orange's coord
+                    rottens.append([i, j])
+                elif status == 1:
+                    # count the fresh oranges
                     fresh += 1
-                else:
-                    continue
 
-        # for every rotten orange, make orange rotten
-        # and put them in the queue again
-        # from rotten orange, simultaneously make rotten oranges in 4 dirs
-        dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+        # 4-directionally adjacent
+        dirs = [
+            [1, 0],
+            [-1, 0],
+            [0, 1],
+            [0, -1],
+        ]
 
-        while q and fresh > 0:
-            # iterate for every rotten orange
-            for _ in range(len(q)):
-                curR, curC = q.popleft()
+        while rottens and fresh > 0:
 
-                for dir in dirs:
-                    r, c = curR + dir[0], curC + dir[1]
-                    if r < 0 or r == ROWS or c < 0 or c == COLS or grid[r][c] != 1:
+            for i in range(len(rottens)):
+
+                # get the current rotten orange and remove it from the queue
+                r, c = rottens.popleft()
+
+                for dr, dc in dirs:
+                    # next cell
+                    row, col = dr + r, dc + c
+
+                    if (
+                        row < 0
+                        or row == len(grid)
+                        or col < 0
+                        or col == len(grid[0])
+                        or grid[row][col] != 1
+                    ):
+                        # skip the rotten or empty cell or out of boundary
                         continue
 
-                    grid[r][c] = 2
-                    fresh -= 1
-                    q.append([r, c])
+                    # new rotten orange!
+                    grid[row][col] = 2
+                    rottens.append([row, col])
 
+                    # reduce the count of fresh orange
+                    fresh -= 1
+
+            # increase the time
             time += 1
 
         return time if fresh == 0 else -1
