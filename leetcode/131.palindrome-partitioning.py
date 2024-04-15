@@ -50,7 +50,9 @@ class Solution:
                 return
 
             for j in range(i, len(s)):
+
                 if self.isPalindrom(s, i, j):
+
                     part.append(s[i : j + 1])
                     dfs(j + 1)  # recursive
                     part.pop()  # clean-up
