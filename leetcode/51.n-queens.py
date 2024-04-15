@@ -56,6 +56,58 @@ from typing import List
 class Solution:
     def solveNQueens(self, n: int) -> List[List[str]]:
 
+        # queens can't be in a same row, column, or diagonal.
+        # which means on the first row there should be one queen
+        # queens cannot be placed by the constraint: column, positive diagonal, negative diagonal
+
+        cSet = set()
+        posDiagSet = set()
+        negDiagSet = set()
+
+        # create an empty board
+        board = [["." for _ in range(n)] for _ in range(n)]  ### caution part
+
+        # result list
+        res = []
+
+        def backtrack(r):
+            # base case 1: we reached to the end
+            if r == n:
+                # append the solution, we have completed board
+                cp = ["".join(row) for row in board]  ### caution part
+                res.append(cp)
+                return
+
+            # try to backtrack for each column in the current row
+            for c in range(n):
+
+                # base case 2: we can't place a queen, skip the column
+
+                if c in cSet or (r + c) in posDiagSet or (r - c) in negDiagSet:
+                    continue
+
+                # put the queen
+                board[r][c] = "Q"
+
+                # update sets
+                cSet.add(c)
+                posDiagSet.add(r + c)
+                negDiagSet.add(r - c)
+
+                # move forward to the next row
+                backtrack(r + 1)
+
+                # reset sets and the board
+                cSet.remove(c)
+                posDiagSet.remove((r + c))
+                negDiagSet.remove((r - c))
+
+                board[r][c] = "."
+
+        # start from zero row
+        backtrack(0)
+        return res
+        """
         # queen can move vertically, horizontally, and diagonally.
         # meaning; only one queen can be placed in a row, or column, or pos/neg diagonals
         # brute-force queen's position based on rows
@@ -105,6 +157,7 @@ class Solution:
 
         backtrack(0)
         return res
+    """
 
 
 # @lc code=end
