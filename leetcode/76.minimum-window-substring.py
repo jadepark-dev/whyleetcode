@@ -67,7 +67,57 @@
 class Solution:
 
     def minWindow(self, s: str, t: str) -> str:
+        # 2024-04-15 review
+        # find minimum window and extract substring
+        # hashmap to compare character count for characters in string t and window s[l, r+1]
+        # maintain two variables, have and need to manipulate our window
+        # extend the right side of window
+        # if we find exact match case, reduce the left side of the window to find minimum length
+        # if we lose the exact match case, reduce our have value to move forward.
 
+        if len(s) < len(t):
+            return ""
+
+        countT, window = {}, {}
+
+        for c in t:
+            countT[c] = 1 + countT.get(c, 0)
+
+        # default value
+        res = [-1, -1]
+
+        # length comparison
+        minLength = float("infinity")
+
+        have, need = 0, len(countT)
+        l = 0
+
+        for r in range(len(s)):
+
+            c = s[r]
+            window[c] = 1 + window.get(c, 0)
+
+            # this is the character we're looking for
+            if c in countT and window[c] == countT[c]:
+                have += 1
+
+            while have == need:
+                # smaller than prevMinLength, update our result
+                if r - l + 1 < minLength:
+                    res = [l, r]
+                    minLength = r - l + 1
+
+                window[s[l]] -= 1
+                # if this decrement makes break our exact match
+                if s[l] in countT and window[s[l]] < countT[s[l]]:
+                    have -= 1
+
+                l += 1
+
+        l, r = res
+        return s[l : r + 1] if minLength != float("infinity") else ""
+
+        """ 2024-04-14 review
         # create a hashmap to count characters in string t
         # create a hashmap to count characters in current window
         # sliding window
@@ -116,6 +166,7 @@ class Solution:
 
         l, r = res
         return s[l : r + 1] if minLength != float("infinity") else ""
+        """
 
 
 # @lc code=end
