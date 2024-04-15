@@ -60,6 +60,39 @@ from collection import deque
 # @lc code=start
 class Solution:
     def maxSlidingWindow(self, nums: list[int], k: int) -> list[int]:
+
+        # maintain the biggest value on the left side of the queue
+        # if we meet bigger number then the last queue element, pop the queue until it's sorted
+        # q stores the index of value
+
+        q = deque()
+
+        l, r = 0, 0
+
+        res = []
+
+        while r < len(nums):
+
+            while q and nums[q[-1]] < nums[r]:
+                q.pop()
+
+            q.append(r)
+
+            if l > q[0]:
+                q.popleft()
+
+            # window size is satisfied
+            if r - l + 1 == k:
+
+                res.append(nums[q[0]])
+
+                l += 1
+
+            r += 1
+
+        return res
+
+        """
         # maintain a q to keep the index of max value on the left side
         q = deque()
 
@@ -84,6 +117,7 @@ class Solution:
             r += 1
 
         return res
+        """
 
 
 # @lc code=end
