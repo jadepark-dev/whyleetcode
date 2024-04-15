@@ -68,45 +68,43 @@ class Solution(object):
         :rtype: bool
         """
 
-        # dfs
-        # a total of numCourses courses you have to take, labeled from 0 to numCourses - 1
-        # {0: [], 1: [] ...}
+        # find cycle in graph
+        # topological sort is only possible with DAG(Directed Acyclic Graph)
+        # create an adjacency list of prerequisites map
+
         preMap = {i: [] for i in range(numCourses)}
 
-        # preprocessing:
-        # map each course to : prereq list
         for crs, pre in prerequisites:
             preMap[crs].append(pre)
 
-        # {0: [], 1: [0]} ...
+        # we have premap
+        # we need visited set to find cycle condition
+        visited = set()
 
-        visiting = set()
-
+        # run dfs to determine if we can finish all courses without cycle
         def dfs(crs):
-            # already processing - cyclic
-            if crs in visiting:
+            # been here, cycle detected
+            if crs in visited:
                 return False
-            # we already visited all prerequisites
-            # OR no required prerequities
+            # no prerequisites, we can finish this course
             if preMap[crs] == []:
                 return True
 
-            # flag up
-            visiting.add(crs)
+            visited.add(crs)
+            # new course but there are prerequisites
             for pre in preMap[crs]:
                 if not dfs(pre):
                     return False
-            # flag down
-            visiting.remove(crs)
-            # empty the preMap
+
+            visited.remove(crs)
             preMap[crs] = []
             return True
 
-        # in case there are separated courses.
-        # duplicated visiting will be prevented by the set "visiting"
-        for c in range(numCourses):
-            if not dfs(c):
+        for crs in range(numCourses):
+            if not dfs(crs):
                 return False
+
+        # we passed all courses
         return True
 
 
