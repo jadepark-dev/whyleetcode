@@ -73,14 +73,18 @@ class Solution:
 
         # brute-forcing with backtracking?
         def bt(i, curS):
+
+            # reached to the target length
             if len(curS) == len(digits):
                 res.append(curS)
                 return
 
+            # append the current character
             for c in nums[digits[i]]:
                 bt(i + 1, curS + c)
 
         if digits:
+            # pass the empty string and index for starter
             bt(0, "")
 
         return res
