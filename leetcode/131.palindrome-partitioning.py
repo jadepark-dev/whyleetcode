@@ -40,31 +40,32 @@ from typing import List
 # @lc code=start
 class Solution:
     def partition(self, s: str) -> List[List[str]]:
-        # backtracking is a smarter way to do brute-forcing
+
         res = []
         part = []
 
-        def dfs(i):  # i is the index of current character
-            if i >= len(s):  # base case - we've  reached to end of the string.
-                res.append(part.copy())
+        def dfs(i):
+            if i >= len(s):
+                # copy and submit the result
+                res.append(part[:])
                 return
 
             for j in range(i, len(s)):
-
-                if self.isPalindrom(s, i, j):
-
+                if self.isPalindrome(s[i : j + 1]):
                     part.append(s[i : j + 1])
-                    dfs(j + 1)  # recursive
-                    part.pop()  # clean-up
+                    dfs(j + 1)
+                    part.pop()
 
         dfs(0)
         return res
 
-    def isPalindrom(self, s, l, r):
+    def isPalindrome(self, s):
+        l, r = 0, len(s) - 1
         while l < r:
             if s[l] != s[r]:
                 return False
-            l, r = l + 1, r - 1
+            l += 1
+            r -= 1
         return True
 
 
