@@ -67,6 +67,7 @@ from collections import List
 # @lc code=start
 class Solution:
     def exist(self, board: List[List[str]], word: str) -> bool:
+        # last reviewed at 2024-04-16
         # recursively check if we can complete the given word
         # try all the cells
 
@@ -110,6 +111,7 @@ class Solution:
 
         for r in range(ROWS):
             for c in range(COLS):
+                # if any path can be completed...
                 if dfs(0, r, c):
                     return True
 
