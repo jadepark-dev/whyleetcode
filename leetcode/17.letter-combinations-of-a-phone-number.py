@@ -59,6 +59,7 @@ from typing import List
 class Solution:
     def letterCombinations(self, digits: str) -> List[str]:
         # map required?
+        # key should be str, (digits is str)
         nums = {
             "2": "abc",
             "3": "def",
@@ -75,6 +76,7 @@ class Solution:
         def bt(i, curS):
 
             # reached to the target length
+            # you can do it with i of course
             if len(curS) == len(digits):
                 res.append(curS)
                 return
@@ -83,6 +85,7 @@ class Solution:
             for c in nums[digits[i]]:
                 bt(i + 1, curS + c)
 
+        # only if digits is provided
         if digits:
             # pass the empty string and index for starter
             bt(0, "")
