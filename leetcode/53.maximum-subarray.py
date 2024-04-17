@@ -59,16 +59,19 @@
 class Solution:
 
     def maxSubArray(self, nums: list[int]) -> int:
-        maxSum = nums[
-            0
-        ]  # we don't initialise it with 0 because there are negative nums
-        curSum = 0  # for calculation
+        curSum = 0
+        maxSum = nums[0]
 
-        for n in nums:  # O(n)
-            if curSum < 0:  # if we find an element that makes our sum negative,
-                curSum = 0  # reset it.
-            curSum += n
+        l = 0
+
+        for r in range(len(nums)):
+            curSum += nums[r]
+
             maxSum = max(maxSum, curSum)
+
+            if curSum < 0:
+                curSum = 0
+                l = r
 
         return maxSum
 
