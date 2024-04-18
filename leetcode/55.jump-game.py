@@ -55,9 +55,13 @@ class Solution(object):
         :type nums: List[int]
         :rtype: bool
         """
+        # to the last index
         goal = len(nums) - 1
 
+        # traverse backwards
         for i in range(len(nums) - 1, -1, -1):
+
+            # current index + capa from current
             if i + nums[i] >= goal:
                 goal = i
 

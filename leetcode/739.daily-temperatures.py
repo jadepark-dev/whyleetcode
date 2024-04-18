@@ -43,16 +43,18 @@
 # @lc code=start
 class Solution:
     def dailyTemperatures(self, temperatures: list[int]) -> list[int]:
+        # temp store colder days in stack
         res = [0] * len(temperatures)
-        stack = []  # [temp, index]
+        stack = []  # (temp, index)
 
         for i, t in enumerate(temperatures):
-            while stack and t > stack[-1][0]:  # we found warmer day!
-                _, elIdx = stack.pop()  # pop it from the stack
-                res[elIdx] = i - elIdx  # save it to res(matching index)
-            stack.append([t, i])
-
+            # if current temp is warmer than the last stack elem temp
+            # pop the stack and fill the res
+            while stack and t > stack[-1][0]:
+                # get the last elem from the stack
+                temp, stackIdx = stack.pop()
+                res[stackIdx] = i - stackIdx
+            stack.append((t, i))
         return res
-
 
 # @lc code=end
