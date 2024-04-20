@@ -73,29 +73,23 @@ from typing import List
 # @lc code=start
 class Solution:
     def twoSum(self, numbers, target: int) -> List[int]:
-        # Initialize two pointers, 'l' and 'r', pointing to the start and end of the array, respectively.
-        # l is shortened form of left
-        # r is shortened for of right
+        # two pointer approach
+
+        # if sum is bigger, move right pointer to the left
+
+        # if sum is smaller than target, move left pointer to the right
+
+        # if we find two numbers that adds up to sum, return indices
+
         l, r = 0, len(numbers) - 1
 
-        # Use a while loop to iterate until 'l' is less than 'r'.
-        while l < r:
-            # Calculate the sum of the numbers at positions 'l' and 'r'.
-            sum_val = numbers[l] + numbers[r]
+        while l < r:  # cannot be overlapped
+            _sum = numbers[l] + numbers[r]
 
-            # If the sum is greater than the target, decrement 'r'.
-            # Because the input array is sorted in non-decreasing order
-            # right value is bigger than left value
-            if sum_val > target:
+            if _sum > target:
                 r -= 1
-            # If the sum is less than the target, increment 'l'.
-            elif sum_val < target:
+            elif _sum < target:
                 l += 1
-            # If the sum is equal to the target, return the indices [l+1, r+1].
-            # todo: why do we add 1 to each of them?
-            # oh it is instuctued
-            # Return the indices of the two numbers, index1 and index2,
-            # !added by one as an integer array [index1, index2] of length 2.
             else:
                 return [l + 1, r + 1]
 
